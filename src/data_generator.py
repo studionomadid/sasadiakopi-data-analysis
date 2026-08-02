@@ -301,18 +301,18 @@ def generate_payment_method() -> str:
 def generate_product() -> dict[str, str | int]:
     """Select a product using weighted product popularity."""
     product_weights = [
-        0.20,  # Es Kopi Susu Sasadiakopi
-        0.10,  # Americano
-        0.08,  # Cafe Latte
-        0.07,  # Cappuccino
-        0.05,  # Mocha
-        0.08,  # Matcha Latte
-        0.07,  # Chocolate
-        0.05,  # Lychee Tea
-        0.07,  # French Fries
-        0.06,  # Chicken Sandwich
-        0.10,  # Churros
-        0.07,  # Toast
+        0.20,
+        0.10,
+        0.08,
+        0.07,
+        0.05,
+        0.08,
+        0.07,
+        0.05,
+        0.07,
+        0.06,
+        0.10,
+        0.07,
     ]
 
     return random_generator.choices(
@@ -569,3 +569,41 @@ def insert_expenses(
     )
 
     connection.commit()
+
+
+# ============================================================
+# MAIN PIPELINE
+# ============================================================
+
+def main() -> None:
+    """Generate and load the complete synthetic dataset."""
+    connection = get_connection()
+
+    try:
+        customers = generate_customers()
+        expenses = generate_expenses()
+
+        connection.execute("DELETE FROM sales")
+        connection.execute("DELETE FROM expenses")
+        connection.execute("DELETE FROM customers")
+        connection.execute("DELETE FROM products")
+
+        insert_customers(connection, customers)
+        insert_products(connection, PRODUCTS)
+
+        sales = generate_sales(customers)
+        insert_sales(connection, sales)
+        insert_expenses(connection, expenses)
+
+        print("Synthetic dataset generated successfully.")
+        print(f"Customers: {len(customers)}")
+        print(f"Products: {len(PRODUCTS)}")
+        print(f"Sales: {len(sales)}")
+        print(f"Expenses: {len(expenses)}")
+
+    finally:
+        connection.close()
+
+
+if __name__ == "__main__":
+    main()
