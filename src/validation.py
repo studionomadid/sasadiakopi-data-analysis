@@ -6,7 +6,6 @@ import pandas as pd
 
 from src.analysis import get_connection, load_all_data
 
-
 OUTPUT_DIRECTORY = Path("outputs/validation")
 OUTPUT_PATH = OUTPUT_DIRECTORY / "sasadiakopi_data_quality.csv"
 

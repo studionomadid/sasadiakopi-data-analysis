@@ -3,8 +3,8 @@ from __future__ import annotations
 import sqlite3
 
 import pandas as pd
-from pandas.errors import DatabaseError
 import pytest
+from pandas.errors import DatabaseError
 
 from src.importer import (
     import_csv,
@@ -12,8 +12,8 @@ from src.importer import (
     load_csv,
     normalize_dataframe,
     validate_dataframe,
-    validate_dates,
     validate_dataset_name,
+    validate_dates,
     validate_ids,
     validate_import,
     validate_numeric_columns,

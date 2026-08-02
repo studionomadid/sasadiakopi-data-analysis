@@ -9,16 +9,15 @@ from src.analysis import (
     calculate_category_performance,
     calculate_customer_segment_performance,
     calculate_expense_summary,
+    calculate_monthly_expenses,
     calculate_monthly_profitability,
     calculate_monthly_sales,
-    calculate_monthly_expenses,
     calculate_payment_performance,
     calculate_product_performance,
     calculate_sales_metrics,
     get_connection,
     load_all_data,
 )
-
 
 # ============================================================
 # KPI CALCULATIONS

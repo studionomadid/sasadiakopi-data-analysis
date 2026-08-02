@@ -6,9 +6,9 @@ import csv
 import random
 from datetime import date, timedelta
 from pathlib import Path
+from typing import Any
 
 from src.database import get_connection, initialize_database
-
 
 # ============================================================
 # PROJECT CONFIGURATION
@@ -214,7 +214,10 @@ def generate_customer_join_date() -> str:
     """Generate a customer join date within the analysis period."""
     days_range = (END_DATE - START_DATE).days
 
-    random_days = random_generator.randint(0, days_range)
+    random_days = random_generator.randint(
+        0,
+        days_range,
+    )
 
     join_date = START_DATE + timedelta(days=random_days)
 
@@ -248,7 +251,10 @@ def generate_sale_date() -> str:
     """Generate a random sale date within the analysis period."""
     days_range = (END_DATE - START_DATE).days
 
-    random_days = random_generator.randint(0, days_range)
+    random_days = random_generator.randint(
+        0,
+        days_range,
+    )
 
     sale_date = START_DATE + timedelta(days=random_days)
 
@@ -290,7 +296,7 @@ def generate_payment_method() -> str:
     )[0]
 
 
-def generate_product() -> dict[str, str | int]:
+def generate_product() -> dict[str, Any]:
     """Select a product using weighted product popularity."""
     product_weights = [
         0.20,
@@ -390,7 +396,7 @@ def write_csv(
 
 def export_synthetic_data(
     customers: list[dict[str, str]],
-    products: list[dict[str, str | int]],
+    products: list[dict[str, Any]],
     sales: list[dict[str, str | int | float]],
     expenses: list[dict[str, str | int]],
 ) -> None:
@@ -451,7 +457,7 @@ def insert_customers(
 
 def insert_products(
     connection,
-    products: list[dict[str, str | int]],
+    products: list[dict[str, Any]],
 ) -> None:
     """Insert product master data into the database."""
     connection.executemany(
@@ -563,7 +569,10 @@ def generate_expense_amount(category: str) -> int:
 
     minimum, maximum = ranges[category]
 
-    return random_generator.randint(minimum, maximum)
+    return random_generator.randint(
+        minimum,
+        maximum,
+    )
 
 
 def generate_expenses(
@@ -576,7 +585,11 @@ def generate_expenses(
 
     for month in range(1, 13):
         for category in EXPENSE_CATEGORIES:
-            expense_date = date(year, month, 1)
+            expense_date = date(
+                year,
+                month,
+                1,
+            )
 
             expenses.append(
                 {
@@ -652,10 +665,25 @@ def main() -> None:
         connection.execute("DELETE FROM customers")
         connection.execute("DELETE FROM products")
 
-        insert_customers(connection, customers)
-        insert_products(connection, products)
-        insert_sales(connection, sales)
-        insert_expenses(connection, expenses)
+        insert_customers(
+            connection,
+            customers,
+        )
+
+        insert_products(
+            connection,
+            products,
+        )
+
+        insert_sales(
+            connection,
+            sales,
+        )
+
+        insert_expenses(
+            connection,
+            expenses,
+        )
 
         print("Synthetic dataset generated successfully.")
         print(f"Customers: {len(customers)}")

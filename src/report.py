@@ -21,18 +21,16 @@ from src.analysis import (
     get_connection,
     load_all_data,
 )
-
 from src.kpi import (
+    calculate_best_month,
     calculate_category_kpis,
     calculate_kpi_summary,
     calculate_monthly_kpis,
     calculate_product_kpis,
     calculate_top_product,
     calculate_top_profit_product,
-    calculate_best_month,
     calculate_worst_month,
 )
-
 
 # ============================================================
 # PROJECT CONFIGURATION

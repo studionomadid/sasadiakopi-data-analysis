@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from time import perf_counter
 
+from src.analysis import get_connection, load_all_data
 from src.dashboard import generate_dashboard
 from src.insights import generate_insights, save_insights
 from src.report import generate_report
@@ -11,9 +12,7 @@ from src.validation import (
     run_validation,
     save_validation_report,
 )
-from src.analysis import get_connection, load_all_data
 from src.visualization import generate_all_charts
-
 
 OUTPUT_DIRECTORY = Path("outputs")
 

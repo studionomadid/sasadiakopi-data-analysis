@@ -7,7 +7,6 @@ import pandas as pd
 from src.analysis import (
     calculate_business_summary,
     calculate_category_performance,
-    calculate_customer_segment_performance,
     calculate_expense_summary,
     calculate_monthly_expenses,
     calculate_monthly_profitability,
@@ -23,7 +22,6 @@ from src.kpi import (
     calculate_product_kpis,
     calculate_worst_month,
 )
-
 
 OUTPUT_DIRECTORY = Path("outputs/insights")
 OUTPUT_PATH = OUTPUT_DIRECTORY / "sasadiakopi_insights.csv"

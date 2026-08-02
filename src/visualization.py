@@ -21,7 +21,6 @@ from src.analysis import (
     load_all_data,
 )
 
-
 # ============================================================
 # PROJECT CONFIGURATION
 # ============================================================
@@ -72,7 +71,7 @@ def plot_monthly_revenue_and_profit(
     """Plot monthly revenue and net profit."""
     dataframe = monthly_profitability.copy()
 
-    figure, axis = plt.subplots(
+    _figure, axis = plt.subplots(
         figsize=(12, 6),
     )
 
@@ -129,7 +128,7 @@ def plot_product_revenue(
         )
     )
 
-    figure, axis = plt.subplots(
+    _figure, axis = plt.subplots(
         figsize=(10, 7),
     )
 
@@ -165,7 +164,7 @@ def plot_product_gross_margin(
         )
     )
 
-    figure, axis = plt.subplots(
+    _figure, axis = plt.subplots(
         figsize=(10, 7),
     )
 
@@ -193,7 +192,7 @@ def plot_category_revenue(
     category_performance: pd.DataFrame,
 ) -> None:
     """Plot revenue by product category."""
-    figure, axis = plt.subplots(
+    _figure, axis = plt.subplots(
         figsize=(8, 6),
     )
 
@@ -221,7 +220,7 @@ def plot_payment_revenue(
     payment_performance: pd.DataFrame,
 ) -> None:
     """Plot revenue by payment method."""
-    figure, axis = plt.subplots(
+    _figure, axis = plt.subplots(
         figsize=(8, 6),
     )
 
@@ -249,7 +248,7 @@ def plot_customer_segment_revenue(
     customer_segment_performance: pd.DataFrame,
 ) -> None:
     """Plot revenue by customer segment."""
-    figure, axis = plt.subplots(
+    _figure, axis = plt.subplots(
         figsize=(8, 6),
     )
 
@@ -285,7 +284,7 @@ def plot_expense_breakdown(
         )
     )
 
-    figure, axis = plt.subplots(
+    _figure, axis = plt.subplots(
         figsize=(10, 7),
     )
 
@@ -315,7 +314,7 @@ def plot_monthly_net_profit(
     """Plot monthly net profit."""
     dataframe = monthly_profitability.copy()
 
-    figure, axis = plt.subplots(
+    _figure, axis = plt.subplots(
         figsize=(12, 6),
     )
 
@@ -353,7 +352,7 @@ def plot_category_gross_margin(
     category_performance: pd.DataFrame,
 ) -> None:
     """Plot gross margin percentage by category."""
-    figure, axis = plt.subplots(
+    _figure, axis = plt.subplots(
         figsize=(8, 6),
     )
 
