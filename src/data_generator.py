@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import csv
 import random
 from datetime import date, timedelta
+from pathlib import Path
 
 from src.database import get_connection, initialize_database
 
@@ -19,6 +21,13 @@ END_DATE = date(2025, 12, 31)
 
 CUSTOMER_COUNT = 300
 SALES_COUNT = 5000
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+SYNTHETIC_DATA_DIRECTORY = (
+    PROJECT_ROOT
+    / "data"
+    / "synthetic"
+)
 
 
 # ============================================================
@@ -347,6 +356,67 @@ def generate_sales(
 
 
 # ============================================================
+# CSV EXPORT
+# ============================================================
+
+def write_csv(
+    filename: str,
+    rows: list[dict[str, object]],
+) -> None:
+    """Write generated records to a CSV file."""
+    if not rows:
+        return
+
+    SYNTHETIC_DATA_DIRECTORY.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    output_path = SYNTHETIC_DATA_DIRECTORY / filename
+
+    with output_path.open(
+        "w",
+        newline="",
+        encoding="utf-8",
+    ) as file:
+        writer = csv.DictWriter(
+            file,
+            fieldnames=list(rows[0].keys()),
+        )
+
+        writer.writeheader()
+        writer.writerows(rows)
+
+
+def export_synthetic_data(
+    customers: list[dict[str, str]],
+    products: list[dict[str, str | int]],
+    sales: list[dict[str, str | int | float]],
+    expenses: list[dict[str, str | int]],
+) -> None:
+    """Export generated datasets to synthetic CSV files."""
+    write_csv(
+        "customers.csv",
+        customers,
+    )
+
+    write_csv(
+        "products.csv",
+        products,
+    )
+
+    write_csv(
+        "sales.csv",
+        sales,
+    )
+
+    write_csv(
+        "expenses.csv",
+        expenses,
+    )
+
+
+# ============================================================
 # DATABASE INSERTION
 # ============================================================
 
@@ -562,29 +632,40 @@ def main() -> None:
     """Generate and load the complete synthetic dataset."""
     initialize_database()
 
+    customers = generate_customers()
+    products = PRODUCTS
+    sales = generate_sales(customers)
+    expenses = generate_expenses()
+
+    export_synthetic_data(
+        customers=customers,
+        products=products,
+        sales=sales,
+        expenses=expenses,
+    )
+
     connection = get_connection()
 
     try:
-        customers = generate_customers()
-        expenses = generate_expenses()
-
         connection.execute("DELETE FROM sales")
         connection.execute("DELETE FROM expenses")
         connection.execute("DELETE FROM customers")
         connection.execute("DELETE FROM products")
 
         insert_customers(connection, customers)
-        insert_products(connection, PRODUCTS)
-
-        sales = generate_sales(customers)
+        insert_products(connection, products)
         insert_sales(connection, sales)
         insert_expenses(connection, expenses)
 
         print("Synthetic dataset generated successfully.")
         print(f"Customers: {len(customers)}")
-        print(f"Products: {len(PRODUCTS)}")
+        print(f"Products: {len(products)}")
         print(f"Sales: {len(sales)}")
         print(f"Expenses: {len(expenses)}")
+        print(
+            "CSV output: "
+            f"{SYNTHETIC_DATA_DIRECTORY}"
+        )
 
     finally:
         connection.close()

@@ -46,3 +46,6 @@ Thumbs.db
 
 # Generated analysis outputs
 outputs/
+
+# Generated synthetic datasets
+data/synthetic/*.csv
