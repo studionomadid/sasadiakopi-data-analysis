@@ -31,6 +31,9 @@ jobs:
       - name: Compile source and tests
         run: python -m compileall -q src tests
 
+      - name: Generate synthetic database
+        run: python -m src.data_generator
+
       - name: Run analytics pipeline
         run: python -m src.pipeline
 

@@ -3,18 +3,14 @@
 from __future__ import annotations
 
 import random
-import sqlite3
 from datetime import date, timedelta
-from pathlib import Path
+
+from src.database import get_connection, initialize_database
 
 
 # ============================================================
 # PROJECT CONFIGURATION
 # ============================================================
-
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-
-DATABASE_PATH = PROJECT_ROOT / "sasadiakopi.db"
 
 RANDOM_SEED = 42
 
@@ -182,19 +178,6 @@ PAYMENT_METHOD_WEIGHTS = [
     0.10,
     0.15,
 ]
-
-
-# ============================================================
-# DATABASE CONNECTION
-# ============================================================
-
-def get_connection() -> sqlite3.Connection:
-    """Create a SQLite connection with foreign keys enabled."""
-    connection = sqlite3.connect(DATABASE_PATH)
-
-    connection.execute("PRAGMA foreign_keys = ON;")
-
-    return connection
 
 
 # ============================================================
@@ -368,7 +351,7 @@ def generate_sales(
 # ============================================================
 
 def insert_customers(
-    connection: sqlite3.Connection,
+    connection,
     customers: list[dict[str, str]],
 ) -> None:
     """Insert generated customers into the database."""
@@ -397,7 +380,7 @@ def insert_customers(
 
 
 def insert_products(
-    connection: sqlite3.Connection,
+    connection,
     products: list[dict[str, str | int]],
 ) -> None:
     """Insert product master data into the database."""
@@ -428,7 +411,7 @@ def insert_products(
 
 
 def insert_sales(
-    connection: sqlite3.Connection,
+    connection,
     sales: list[dict[str, str | int | float]],
 ) -> None:
     """Insert generated sales transactions into the database."""
@@ -541,7 +524,7 @@ def generate_expenses(
 
 
 def insert_expenses(
-    connection: sqlite3.Connection,
+    connection,
     expenses: list[dict[str, str | int]],
 ) -> None:
     """Insert generated expenses into the database."""
@@ -577,6 +560,8 @@ def insert_expenses(
 
 def main() -> None:
     """Generate and load the complete synthetic dataset."""
+    initialize_database()
+
     connection = get_connection()
 
     try:
